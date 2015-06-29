@@ -1,0 +1,40 @@
+<html>
+  <body>
+
+    <video id="video" controls></video>
+
+    <script>
+      window.URL = window.URL || window.webkitURL;
+      window.MediaSource = window.MediaSource || window.WebKitMediaSource;
+
+      if (!!!window.MediaSource) {
+        alert('MediaSource API is not available!');
+      }
+
+      var mediaSource = new MediaSource();
+      var video = document.getElementById('video');
+      video.src = window.URL.createObjectURL(mediaSource);
+
+      mediaSource.addEventListener('sourceopen', function() { // Also `webkitsourceopen`?
+        console.log('source opened');
+
+        var sourceBuffer = mediaSource.addSourceBuffer('video/webm; codecs="vorbis,vp8"');
+
+        fetch('/video/test.webm').then(function(response) {
+          console.log('video fetched');
+
+          return response.arrayBuffer().then(function(buffer) {
+            console.log('response converted to ArrayBuffer');
+            sourceBuffer.appendBuffer(buffer);
+
+            if (video.paused) {
+              video.play();
+            }
+          });
+        });
+      });
+
+    </script>
+
+  </body>
+</html>
