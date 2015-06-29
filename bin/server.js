@@ -7,7 +7,7 @@ var connect = require('connect');
 var serveStatic = require('serve-static');
 
 var staticPort = 1234;
-connect().use(serveStatic(__dirname + '/static')).listen(staticPort, function() {
+connect().use(serveStatic(__dirname + '/../static')).listen(staticPort, function() {
   console.log('HTTP server listening on port ' + staticPort);
 });
 
