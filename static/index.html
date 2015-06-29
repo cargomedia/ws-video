@@ -1,6 +1,8 @@
 <html>
   <body>
 
+    <script src="//cdn.jsdelivr.net/sockjs/1.0.0/sockjs.min.js"></script>
+
     <video id="video" controls></video>
 
     <script>
@@ -20,18 +22,25 @@
 
         var sourceBuffer = mediaSource.addSourceBuffer('video/webm; codecs="vorbis,vp8"');
 
-        fetch('/video/test.webm').then(function(response) {
-          console.log('video fetched');
+        var connection = new WebSocket('ws://localhost:8090');
+        connection.binaryType = 'arraybuffer';
+        connection.onopen = function() {
+          console.log('WS open');
+        };
+        connection.onmessage = function(event) {
+          console.log('WS message');
 
-          return response.arrayBuffer().then(function(buffer) {
-            console.log('response converted to ArrayBuffer');
-            sourceBuffer.appendBuffer(buffer);
-
+          if (event.data instanceof ArrayBuffer) {
+            console.log('appending data');
+            sourceBuffer.appendBuffer(event.data);
             if (video.paused) {
               video.play();
             }
-          });
-        });
+          }
+        };
+        connection.onclose = function() {
+          console.log('WS close');
+        };
       });
 
     </script>

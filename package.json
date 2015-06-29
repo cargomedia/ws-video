@@ -1,0 +1,12 @@
+{
+  "name": "ws-video",
+  "description": "WebSocket video streaming",
+  "version": "0.0.1",
+  "author": "Cargomedia",
+  "dependencies": {
+    "connect": "^3.4.0",
+    "http": "~0.8",
+    "serve-static": "^1.10.0",
+    "websocket": "~1.0"
+  }
+}
