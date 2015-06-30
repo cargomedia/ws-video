@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 var http = require('http');
-var websocketServer = require('websocket').server;
+var websocket = require('websocket').server;
 var fs = require('fs');
 var connect = require('connect');
 var serveStatic = require('serve-static');
@@ -12,13 +12,13 @@ connect().use(serveStatic(__dirname + '/../static')).listen(staticPort, function
 });
 
 var websocketPort = 8090;
-var http = http.createServer(function(request, response) { });
-http.listen(websocketPort, function() {
+var httpServer = http.createServer();
+httpServer.listen(websocketPort, function() {
   console.log('WebSocket server listening on port ' + websocketPort);
 });
 
-var websocket = new websocketServer({ httpServer: http });
-websocket.on('request', function(request) {
+var websocketServer = new websocket({httpServer: httpServer});
+websocketServer.on('request', function(request) {
   var connection = request.accept(null, request.origin);
   connection.binaryType = "arraybuffer";
   console.log('WS connect');
