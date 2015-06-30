@@ -4,10 +4,7 @@
     <video id="video" controls></video>
 
     <script>
-      window.URL = window.URL || window.webkitURL;
-      window.MediaSource = window.MediaSource || window.WebKitMediaSource;
-
-      if (!!!window.MediaSource) {
+      if (!window.MediaSource) {
         alert('MediaSource API is not available!');
       }
 
@@ -15,7 +12,7 @@
       var video = document.getElementById('video');
       video.src = window.URL.createObjectURL(mediaSource);
 
-      mediaSource.addEventListener('sourceopen', function() { // Also `webkitsourceopen`?
+      mediaSource.addEventListener('sourceopen', function() {
         console.log('source opened');
 
         var sourceBuffer = mediaSource.addSourceBuffer('video/webm; codecs="vorbis,vp8"');
